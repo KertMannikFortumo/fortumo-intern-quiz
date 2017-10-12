@@ -1,0 +1,15 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'javax.servlet:javax.servlet-api:3.1.0'
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    compile 'org.eclipse.jetty:jetty-server:9.4.7.v20170914'
+    testCompile 'junit:junit:4.12'
+}
+
+mainClassName = 'ee.kertmannik.quiz.Main'
