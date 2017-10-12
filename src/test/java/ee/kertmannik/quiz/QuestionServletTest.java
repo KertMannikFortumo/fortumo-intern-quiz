@@ -18,15 +18,18 @@ public class QuestionServletTest {
         this.servletTester = new ServletTester();
         this.request = new HttpTester();
         this.response = new HttpTester();
-        this.servletTester.addServlet(QuestionServlet.class, "/question");
+        this.servletTester.addServlet(ee.kertmannik.quiz.QuestionServlet.class, "/question");
+        this.servletTester.addFilter(ee.kertmannik.quiz.IdentifierFilter.class, "/*", 0);
         this.servletTester.start();
     }
+
     @Test
     public void should_return_statuscode_200_if_header_is_present()throws Exception{
         //given
-        request.setHeader("x-player-name", "Vahur");
-        request.setMethod("GET");
-        request.setURI("/question");
+        this.request.setHeader("x-player-name", "Vahur");
+        this.request.setMethod("GET");
+        this.request.setURI("/question");
+        this.request.setVersion("HTTP/1.0");
 
         //when
         this.response.parse(this.servletTester.getResponses(this.request.generate()));
@@ -35,4 +38,18 @@ public class QuestionServletTest {
         assertEquals(200, this.response.getStatus());
     }
 
+    @Test
+    public void should_return_statuscode_400_if_header_is_not_present()throws Exception{
+        //given
+        this.request.setMethod("GET");
+        this.request.setURI("/question");
+        this.request.setVersion("HTTP/1.0");
+
+        //when
+        this.response.parse(this.servletTester.getResponses(this.request.generate()));
+
+        //then
+        assertEquals(400, this.response.getStatus());
+        assertEquals("Please use x-player-name header!", this.response.getContent());
+    }
 }

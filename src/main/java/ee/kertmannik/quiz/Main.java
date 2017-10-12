@@ -10,6 +10,7 @@ public class Main {
         Server server = new Server(port);
         ServletHandler servletHandler = new ServletHandler();
         server.setHandler(servletHandler);
+        servletHandler.addFilterWithMapping(IdentifierFilter.class, "/*", 0);
         servletHandler.addServletWithMapping(QuestionServlet.class, "/question");
         server.start();
         server.join();
