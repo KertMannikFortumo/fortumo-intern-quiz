@@ -1,8 +1,13 @@
 package ee.kertmannik.quiz;
 
+import org.eclipse.jetty.server.Server;
+
 public class Main {
 
-    public static void main(String[] args) {
-        System.out.println("Hello, world!");
+    public static void main(String[] args) throws Exception{
+        Server server = new Server(8080);
+        server.setHandler(new HelloWorldHandler());
+        server.start();
+        server.join();
     }
 }
