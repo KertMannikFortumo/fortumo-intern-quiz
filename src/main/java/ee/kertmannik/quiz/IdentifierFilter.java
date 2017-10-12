@@ -25,7 +25,7 @@ public class IdentifierFilter implements Filter {
         final HttpServletResponse res = (HttpServletResponse) response;
         final HttpServletRequest req = (HttpServletRequest) request;
         final String candidateName = req.getHeader("x-player-name");
-        if (candidateName!= null && !candidateName.isEmpty()) {
+        if (candidateName != null && !candidateName.isEmpty()) {
             chain.doFilter(request, response);
         } else {
             res.setStatus(HttpServletResponse.SC_BAD_REQUEST);

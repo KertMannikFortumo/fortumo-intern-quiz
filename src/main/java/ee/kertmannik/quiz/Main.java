@@ -5,12 +5,12 @@ import org.eclipse.jetty.servlet.ServletHandler;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         int port = Integer.parseInt(System.getenv("PORT"));
         Server server = new Server(port);
         ServletHandler servletHandler = new ServletHandler();
         server.setHandler(servletHandler);
-        servletHandler.addFilterWithMapping(IdentifierFilter.class, "/*", 0);
+        servletHandler.addFilterWithMapping(IdentifierFilter.class, "/question", 0);
         servletHandler.addServletWithMapping(QuestionServlet.class, "/question");
         server.start();
         server.join();

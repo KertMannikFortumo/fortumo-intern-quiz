@@ -1,18 +1,20 @@
 package ee.kertmannik.quiz;
 
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class QuestionDatabaseTest {
 
     @Test
     public void should_return_json_string() {
         //given
-        QuestionDatabase questionDatabase = new QuestionDatabase();
+        QuestionRepository questionDatabase = new QuestionRepository();
+
         //when
         String result = questionDatabase.jsonAnswers();
+
         //then
-        assertEquals("[{\"id\":\"42\",\"question\":\"Kes on tubli poiss?\",\"category\":\"general\",\"difficulty\":1}]", result);
+        assertThat(result).isEqualTo(
+                "[{\"id\":\"42\",\"question\":\"Kes on tubli poiss?\",\"category\":\"general\",\"difficulty\":1}]");
     }
 }

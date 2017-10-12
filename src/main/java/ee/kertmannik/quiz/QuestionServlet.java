@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns = "question")
 public class QuestionServlet extends HttpServlet {
 
-    QuestionDatabase questionDatabase = new QuestionDatabase();
+    QuestionRepository questionRepository = new QuestionRepository();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -18,7 +18,7 @@ public class QuestionServlet extends HttpServlet {
     {
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_OK);
-        String json = questionDatabase.jsonAnswers();
+        String json = questionRepository.jsonAnswers();
         response.getWriter().println(json);
     }
 }

@@ -5,6 +5,9 @@ import org.eclipse.jetty.testing.ServletTester;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import static org.junit.Assert.*;
 
 public class QuestionServletTest {
@@ -35,7 +38,7 @@ public class QuestionServletTest {
         this.response.parse(this.servletTester.getResponses(this.request.generate()));
 
         //then
-        assertEquals(200, this.response.getStatus());
+        assertThat(this.response.getStatus()).isEqualTo(200);
     }
 
     @Test
@@ -49,7 +52,7 @@ public class QuestionServletTest {
         this.response.parse(this.servletTester.getResponses(this.request.generate()));
 
         //then
-        assertEquals(400, this.response.getStatus());
-        assertEquals("Please use x-player-name header!", this.response.getContent());
+        assertThat(this.response.getStatus()).isEqualTo(400);
+        assertThat(this.response.getContent()).isEqualTo("Please use x-player-name header!");
     }
 }
