@@ -11,6 +11,14 @@ dependencies {
     compile 'org.eclipse.jetty:jetty-server:9.4.7.v20170914'
     compile 'org.eclipse.jetty:jetty-servlet:9.4.7.v20170914'
     testCompile 'junit:junit:4.12'
+    testCompile 'org.eclipse.jetty:jetty-servlet-tester:7.0.0.M2'
 }
 
+configurations.all {
+    resolutionStrategy {
+        // fail eagerly on version conflict (includes transitive dependencies)
+        // e.g. multiple different versions of the same dependency (group and name are equal)
+        failOnVersionConflict()
+    }
+}
 mainClassName = 'ee.kertmannik.quiz.Main'

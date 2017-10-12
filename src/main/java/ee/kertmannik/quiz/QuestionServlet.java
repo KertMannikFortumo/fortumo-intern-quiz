@@ -15,6 +15,7 @@ public class QuestionServlet extends HttpServlet {
     {
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println("<h1>Hello from HelloServlet</h1>");
+        String json = "<h1>Hello from HelloServlet</h1>";
+        response.getWriter().println(json);
     }
 }
