@@ -30,23 +30,22 @@ public class QuestionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         List<Question> questions = this.questionRepository.getAllQuestions();
-        System.out.println(questions);
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
-        Question question = getQuestion(questions);
-        Gson gson = new Gson();
-        String result = gson.toJson(question);
-        response.getWriter().print(result);
+        String question = getQuestion(questions);
+        response.getWriter().print(question);
         this.questionGetCounter += 1;
-
     }
 
-    private Question getQuestion(List<Question> questions) {
+    private String getQuestion(List<Question> questions) {
+        Question question;
         if (this.questionGetCounter == questions.size()) {
-            return questions.get(0);
+            question = questions.get(0);
         } else {
-            return questions.get(randomIntegerGenerator(questions.size()));
+            question = questions.get(randomIntegerGenerator(questions.size()));
         }
+        Gson gson = new Gson();
+        return gson.toJson(question); //return question with the answer
     }
 
     private int randomIntegerGenerator(int maxNumber) {

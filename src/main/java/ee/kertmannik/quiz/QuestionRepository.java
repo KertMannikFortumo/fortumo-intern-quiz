@@ -7,14 +7,14 @@ import java.util.List;
 
 public class QuestionRepository {
 
+    GetRequestToGist getRequestToGist = new GetRequestToGist();
 
     public List<Question> getAllQuestions() {
         return getQuestionsFromGist();
     }
 
     private List<Question> getQuestionsFromGist() {
-        GetRequestToGist getRequestToGist = new GetRequestToGist();
-        final String rawData = getRequestToGist.questionsRequest();
+        final String rawData = this.getRequestToGist.questionsRequest();
         System.out.println(rawData);
         List<Question> questions = splittingRawQuestions(rawData);
         return questions;

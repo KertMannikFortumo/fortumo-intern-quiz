@@ -5,7 +5,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 @WebListener("MyServletContextListener")
-public class MyServletContextListener  implements ServletContextListener {
+public class MyServletContextListener implements ServletContextListener {
 
     public static final String ANSWER_VALIDATOR = "AnswerValidator";
     public static final String QUESTION_REPOSITORY = "QuestionRepository";
@@ -17,7 +17,6 @@ public class MyServletContextListener  implements ServletContextListener {
 
         sce.getServletContext().setAttribute(ANSWER_VALIDATOR, answerValidator);
         sce.getServletContext().setAttribute(QUESTION_REPOSITORY, questionRepository);
-
     }
 
     protected AnswerValidator createAnswerValidator() {
@@ -32,5 +31,4 @@ public class MyServletContextListener  implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent sce) {
 
     }
-
 }

@@ -8,7 +8,8 @@ import java.io.IOException;
 
 public class GetRequestToGist {
 
-    public static final String URL = "https://gist.githubusercontent.com/KertMannikFortumo/6b17dca9c9ae8ff089d3c50aa7a03329/raw/01cbbd75ed39d917d008881ee6db8f140663a17a/gistfile1.txt";
+    public static final String URL =
+            "https://gist.githubusercontent.com/KertMannikFortumo/6b17dca9c9ae8ff089d3c50aa7a03329/raw/01cbbd75ed39d917d008881ee6db8f140663a17a/gistfile1.txt";
 
     public String questionsRequest() {
         try {
