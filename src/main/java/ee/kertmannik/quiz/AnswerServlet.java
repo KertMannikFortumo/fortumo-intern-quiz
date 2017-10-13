@@ -12,13 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 public class AnswerServlet extends HttpServlet {
 
     AnswerValidator answerValidater = new AnswerValidator();
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final String answer = getRequestBody(req);
+        final String validatedAnswer = this.answerValidater.validateAnswer(answer);
+        final int responseCode = 200;
 
-        final String result = answerValidater.validateAnswer(answer);
-        int responseCode = 200;
-        resp.getWriter().write(result);
+        resp.setContentType("plain/text");
+        resp.getWriter().write(validatedAnswer);
         resp.setStatus(responseCode);
         resp.getWriter().close();
     }
