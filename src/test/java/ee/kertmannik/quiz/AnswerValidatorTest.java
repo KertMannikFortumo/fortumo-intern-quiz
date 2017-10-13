@@ -1,16 +1,14 @@
 package ee.kertmannik.quiz;
 
 import ee.kertmannik.quiz.model.Answer;
-import javafx.scene.AmbientLight;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 public class AnswerValidatorTest {
 
     @Test
-    public void should_return_wrong_if_answer_for_question_42_is_wrong(){
+    public void should_return_wrong_if_answer_for_question_42_is_wrong() {
         //given
         AnswerValidator answerValidator = new AnswerValidator();
         Answer testAnswer = new Answer("42", "Toomas");
@@ -23,7 +21,7 @@ public class AnswerValidatorTest {
     }
 
     @Test
-    public void should_return_correct_if_answer_for_question_42_is_right(){
+    public void should_return_correct_if_answer_for_question_42_is_right() {
         //given
         AnswerValidator answerValidator = new AnswerValidator();
         Answer testAnswer = new Answer("42", "Lars");
@@ -33,7 +31,5 @@ public class AnswerValidatorTest {
 
         //then
         assertThat("correct").isEqualTo(result);
-
     }
-
 }
