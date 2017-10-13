@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns = "/question")
 public class QuestionServlet extends HttpServlet {
 
+    public static final String QUESTION_REPOSITORY = MyServletContextListener.QUESTION_REPOSITORY;
     private QuestionRepository questionRepository;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        this.questionRepository = (QuestionRepository) config.getServletContext().getAttribute("Injecting QuestionRepository");
+        this.questionRepository = (QuestionRepository) config.getServletContext().getAttribute(
+                QUESTION_REPOSITORY);
     }
 
     @Override
@@ -24,7 +26,7 @@ public class QuestionServlet extends HttpServlet {
     {
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_OK);
-        String json = questionRepository.jsonAnswers();
+        final String json = this.questionRepository.jsonAnswers();
         response.getWriter().print(json);
     }
 }

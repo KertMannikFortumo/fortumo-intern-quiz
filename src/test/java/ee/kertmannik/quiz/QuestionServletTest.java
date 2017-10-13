@@ -43,13 +43,13 @@ public class QuestionServletTest {
         this.request.setMethod("GET");
         this.request.setURI("/question");
         this.request.setVersion("HTTP/1.0");
-        given(this.repositoryMock.jsonAnswers()).willReturn("correct");
+        given(this.repositoryMock.jsonAnswers()).willReturn("any_question");
 
         //when
         this.response.parse(this.servletTester.getResponses(this.request.generate()));
 
         //then
-        assertThat(this.response.getContent()).isEqualTo("correct");
+        assertThat(this.response.getContent()).isEqualTo("any_question");
         assertThat(this.response.getStatus()).isEqualTo(200);
     }
 
@@ -59,7 +59,7 @@ public class QuestionServletTest {
         this.request.setMethod("GET");
         this.request.setURI("/question");
         this.request.setVersion("HTTP/1.0");
-        given(this.repositoryMock.jsonAnswers()).willReturn("correct");
+        given(this.repositoryMock.jsonAnswers()).willReturn("any_question");
 
         //when
         this.response.parse(this.servletTester.getResponses(this.request.generate()));

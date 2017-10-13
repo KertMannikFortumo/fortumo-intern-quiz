@@ -7,13 +7,16 @@ import javax.servlet.annotation.WebListener;
 @WebListener("MyServletContextListener")
 public class MyServletContextListener  implements ServletContextListener {
 
+    public static final String ANSWER_VALIDATOR = "AnswerValidator";
+    public static final String QUESTION_REPOSITORY = "QuestionRepository";
+
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         final AnswerValidator answerValidator = this.createAnswerValidator();
         final QuestionRepository questionRepository = this.createQuestionRepository();
 
-        sce.getServletContext().setAttribute("Injecting AnswerValidator", answerValidator);
-        sce.getServletContext().setAttribute("Injecting QuestionRepository", questionRepository);
+        sce.getServletContext().setAttribute(ANSWER_VALIDATOR, answerValidator);
+        sce.getServletContext().setAttribute(QUESTION_REPOSITORY, questionRepository);
 
     }
 

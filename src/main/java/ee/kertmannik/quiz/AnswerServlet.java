@@ -12,11 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns = "/answer")
 public class AnswerServlet extends HttpServlet {
 
+    public static final String ANSWER_VALIDATOR = MyServletContextListener.ANSWER_VALIDATOR;
     private AnswerValidator answerValidator;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        this.answerValidator = (AnswerValidator) config.getServletContext().getAttribute("Injecting AnswerValidator");
+        this.answerValidator = (AnswerValidator) config.getServletContext().getAttribute(ANSWER_VALIDATOR);
     }
 
     @Override
