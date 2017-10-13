@@ -1,4 +1,4 @@
-package ee.kertmannik.quiz;
+package ee.kertmannik.quiz.model;
 
 import com.google.gson.annotations.SerializedName;
 

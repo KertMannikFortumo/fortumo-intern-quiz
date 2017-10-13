@@ -1,11 +1,13 @@
 package ee.kertmannik.quiz;
 
+import ee.kertmannik.quiz.model.Answer;
 import org.eclipse.jetty.testing.HttpTester;
 import org.eclipse.jetty.testing.ServletTester;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -34,14 +36,14 @@ public class AnswerServletTest {
     }
 
     @Test
-    public void should_return_statuscode_200_if_answer_is_correct() throws Exception {
+    public void should_return_statuscode_200_and_result_from_answer_validator() throws Exception {
         //given
         this.request.setHeader("x-player-name", "Mostafa");
         this.request.setMethod("POST");
         this.request.setURI("/answer");
         this.request.setContent("{\"question-id\":\"42\",\"answer\":\"anything\"}");
         this.request.setVersion("HTTP/1.0");
-        given(this.validatorMock.validateAnswer(this.request.getContent())).willReturn("any_answer");
+        given(this.validatorMock.validateAnswer(any(Answer.class))).willReturn("any_answer");
 
         //when
         this.response.parse(this.servletTester.getResponses(this.request.generate()));

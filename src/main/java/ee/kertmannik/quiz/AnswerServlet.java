@@ -1,5 +1,8 @@
 package ee.kertmannik.quiz;
 
+import com.google.gson.Gson;
+import ee.kertmannik.quiz.model.Answer;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import javax.servlet.ServletConfig;
@@ -13,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 public class AnswerServlet extends HttpServlet {
 
     public static final String ANSWER_VALIDATOR = MyServletContextListener.ANSWER_VALIDATOR;
+
+    private Gson gson = new Gson();
     private AnswerValidator answerValidator;
 
     @Override
@@ -22,13 +27,13 @@ public class AnswerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        final String answer = this.getRequestBody(req);
-        final String validatedAnswer = this.answerValidator.validateAnswer(answer);
-        final int responseCode = HttpServletResponse.SC_OK;
+        final String rawRequestBody = this.getRequestBody(req);
+        final Answer answer = this.gson.fromJson(rawRequestBody, Answer.class);
+        final String result = this.answerValidator.validateAnswer(answer);
 
+        resp.setStatus(HttpServletResponse.SC_OK);
         resp.setContentType("plain/text");
-        resp.getWriter().write(validatedAnswer);
-        resp.setStatus(responseCode);
+        resp.getWriter().write(result);
         resp.getWriter().close();
     }
 
