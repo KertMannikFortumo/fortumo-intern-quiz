@@ -1,6 +1,7 @@
 package ee.kertmannik.quiz;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import ee.kertmannik.quiz.model.Answer;
 
 import java.io.BufferedReader;
@@ -28,16 +29,14 @@ public class AnswerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final String rawRequestBody = this.getRequestBody(req);
-        final Answer answer = this.gson.fromJson(rawRequestBody, Answer.class);
-        final String result = this.answerValidator.validateAnswer(answer);
-
-        resp.setStatus(HttpServletResponse.SC_OK);
-        resp.setContentType("plain/text");
-        resp.getWriter().write(result);
-        resp.getWriter().close();
+        try {
+            this.validateAnswerAndSendResult(resp, rawRequestBody);
+        } catch (JsonSyntaxException e) {
+            this.sendErrorMessage(resp);
+        }
     }
 
-    protected String getRequestBody(final HttpServletRequest request) throws IOException {
+    private String getRequestBody(final HttpServletRequest request) throws IOException {
         final StringBuilder stringBuilder = new StringBuilder();
         final BufferedReader reader = request.getReader();
         String line;
@@ -49,5 +48,23 @@ public class AnswerServlet extends HttpServlet {
             stringBuilder.append(line);
         }
         return stringBuilder.toString();
+    }
+
+    private void validateAnswerAndSendResult(HttpServletResponse resp, String rawRequestBody) throws IOException {
+        Answer answer = this.gson.fromJson(rawRequestBody, Answer.class);
+        final String result = this.answerValidator.validateAnswer(answer);
+
+        this.sendResponse(resp, result, HttpServletResponse.SC_OK);
+    }
+
+    private void sendErrorMessage(HttpServletResponse resp) throws IOException {
+        this.sendResponse(resp, "Could not parse request body.", HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+    private void sendResponse(HttpServletResponse resp, String responseBody, int statusCode) throws IOException {
+        resp.setStatus(statusCode);
+        resp.setContentType("plain/text");
+        resp.getWriter().write(responseBody);
+        resp.getWriter().close();
     }
 }

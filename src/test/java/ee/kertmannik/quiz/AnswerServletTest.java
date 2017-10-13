@@ -52,4 +52,21 @@ public class AnswerServletTest {
         assertThat(this.response.getStatus()).isEqualTo(200);
         assertThat(this.response.getContent()).isEqualTo("any_answer");
     }
+
+    @Test
+    public void should_return_statuscode_400_and_error_message_if_request_body_is_not_valid_answer() throws Exception {
+        //given
+        this.request.setHeader("x-player-name", "Mostafa");
+        this.request.setMethod("POST");
+        this.request.setURI("/answer");
+        this.request.setContent("not_valid_json");
+        this.request.setVersion("HTTP/1.0");
+
+        //when
+        this.response.parse(this.servletTester.getResponses(this.request.generate()));
+
+        //then
+        assertThat(this.response.getStatus()).isEqualTo(400);
+        assertThat(this.response.getContent()).isEqualTo("Could not parse request body.");
+    }
 }
