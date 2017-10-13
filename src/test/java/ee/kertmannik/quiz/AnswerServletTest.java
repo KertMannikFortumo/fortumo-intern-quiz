@@ -1,20 +1,20 @@
 package ee.kertmannik.quiz;
 
-import com.sun.deploy.net.HttpRequest;
 import org.eclipse.jetty.testing.HttpTester;
 import org.eclipse.jetty.testing.ServletTester;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 public class AnswerServletTest {
+
     private ServletTester servletTester;
     private HttpTester request;
     private HttpTester response;
+    private AnswerValidator validatorMock;
 
     @Before
     public void initialize() throws Exception {
@@ -23,6 +23,13 @@ public class AnswerServletTest {
         this.response = new HttpTester();
         this.servletTester.addServlet(ee.kertmannik.quiz.AnswerServlet.class, "/answer");
         this.servletTester.addFilter(ee.kertmannik.quiz.IdentifierFilter.class, "/*", 0);
+        this.servletTester.addEventListener(new MyServletContextListener() {
+            @Override
+            protected AnswerValidator createAnswerValidator() {
+                validatorMock = mock(AnswerValidator.class);
+                return validatorMock;
+            }
+        });
         this.servletTester.start();
     }
 
@@ -34,6 +41,7 @@ public class AnswerServletTest {
         this.request.setURI("/answer");
         this.request.setContent("{\"question-id\":\"42\",\"answer\":\"Lars\"}");
         this.request.setVersion("HTTP/1.0");
+        given(this.validatorMock.validateAnswer(this.request.getContent())).willReturn("correct");
 
         //when
         this.response.parse(this.servletTester.getResponses(this.request.generate()));
@@ -51,6 +59,7 @@ public class AnswerServletTest {
         this.request.setURI("/answer");
         this.request.setContent("{\"question-id\":\"42\",\"answer\":\"Martin Koppel\"}");
         this.request.setVersion("HTTP/1.0");
+        given(this.validatorMock.validateAnswer(this.request.getContent())).willReturn("wrong");
 
         //when
         this.response.parse(this.servletTester.getResponses(this.request.generate()));
