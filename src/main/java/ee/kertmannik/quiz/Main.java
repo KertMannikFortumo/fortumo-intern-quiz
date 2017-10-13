@@ -11,7 +11,7 @@ public class Main {
         ServletHandler servletHandler = new ServletHandler();
         server.setHandler(servletHandler);
         servletHandler.addServletWithMapping(AnswerServlet.class, "/answer");
-        servletHandler.addFilterWithMapping(IdentifierFilter.class, "/*", 0);
+        servletHandler.addFilterWithMapping(IdentificationFilter.class, "/*", 0);
         servletHandler.addServletWithMapping(QuestionServlet.class, "/question");
         server.start();
         server.join();

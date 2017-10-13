@@ -11,7 +11,7 @@ public class QuestionDatabaseTest {
         QuestionRepository questionDatabase = new QuestionRepository();
 
         //when
-        String result = questionDatabase.jsonAnswers();
+        String result = questionDatabase.getAllQuestions();
 
         //then
         assertThat(result).isEqualTo(

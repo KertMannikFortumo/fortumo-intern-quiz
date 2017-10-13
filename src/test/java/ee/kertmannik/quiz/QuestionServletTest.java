@@ -5,10 +5,8 @@ import org.eclipse.jetty.testing.ServletTester;
 import org.junit.Before;
 import org.junit.Test;
 
-import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -25,7 +23,7 @@ public class QuestionServletTest {
         this.request = new HttpTester();
         this.response = new HttpTester();
         this.servletTester.addServlet(ee.kertmannik.quiz.QuestionServlet.class, "/question");
-        this.servletTester.addFilter(ee.kertmannik.quiz.IdentifierFilter.class, "/*", 0);
+        this.servletTester.addFilter(IdentificationFilter.class, "/*", 0);
         this.servletTester.addEventListener(new MyServletContextListener() {
             @Override
             protected QuestionRepository createQuestionRepository() {
@@ -43,7 +41,7 @@ public class QuestionServletTest {
         this.request.setMethod("GET");
         this.request.setURI("/question");
         this.request.setVersion("HTTP/1.0");
-        given(this.repositoryMock.jsonAnswers()).willReturn("any_question");
+        given(this.repositoryMock.getAllQuestions()).willReturn("any_question");
 
         //when
         this.response.parse(this.servletTester.getResponses(this.request.generate()));
@@ -59,7 +57,7 @@ public class QuestionServletTest {
         this.request.setMethod("GET");
         this.request.setURI("/question");
         this.request.setVersion("HTTP/1.0");
-        given(this.repositoryMock.jsonAnswers()).willReturn("any_question");
+        given(this.repositoryMock.getAllQuestions()).willReturn("any_question");
 
         //when
         this.response.parse(this.servletTester.getResponses(this.request.generate()));

@@ -23,6 +23,7 @@ public class MyServletContextListener  implements ServletContextListener {
     protected AnswerValidator createAnswerValidator() {
         return new AnswerValidator();
     }
+
     protected QuestionRepository createQuestionRepository() {
         return new QuestionRepository();
     }

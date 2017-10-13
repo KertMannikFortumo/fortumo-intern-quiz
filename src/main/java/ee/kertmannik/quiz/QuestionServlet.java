@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 public class QuestionServlet extends HttpServlet {
 
     public static final String QUESTION_REPOSITORY = MyServletContextListener.QUESTION_REPOSITORY;
+    
     private QuestionRepository questionRepository;
 
     @Override
@@ -24,9 +25,10 @@ public class QuestionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        response.setContentType("application/json");
+        final String responseBody = this.questionRepository.getAllQuestions();
+        final String json = responseBody;
         response.setStatus(HttpServletResponse.SC_OK);
-        final String json = this.questionRepository.jsonAnswers();
+        response.setContentType("application/json");
         response.getWriter().print(json);
     }
 }

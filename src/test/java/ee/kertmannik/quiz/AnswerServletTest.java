@@ -24,7 +24,7 @@ public class AnswerServletTest {
         this.request = new HttpTester();
         this.response = new HttpTester();
         this.servletTester.addServlet(ee.kertmannik.quiz.AnswerServlet.class, "/answer");
-        this.servletTester.addFilter(ee.kertmannik.quiz.IdentifierFilter.class, "/*", 0);
+        this.servletTester.addFilter(IdentificationFilter.class, "/*", 0);
         this.servletTester.addEventListener(new MyServletContextListener() {
             @Override
             protected AnswerValidator createAnswerValidator() {

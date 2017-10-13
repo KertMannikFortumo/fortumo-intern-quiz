@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebFilter(urlPatterns = {"/*"})
-public class IdentifierFilter implements Filter {
+public class IdentificationFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
