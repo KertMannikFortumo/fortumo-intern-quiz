@@ -1,9 +1,13 @@
 package ee.kertmannik.quiz;
 
+import ee.kertmannik.quiz.model.Question;
 import org.eclipse.jetty.testing.HttpTester;
 import org.eclipse.jetty.testing.ServletTester;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,13 +45,17 @@ public class QuestionServletTest {
         this.request.setMethod("GET");
         this.request.setURI("/question");
         this.request.setVersion("HTTP/1.0");
-        given(this.repositoryMock.getAllQuestions()).willReturn("any_question");
+        final List<String> correctAnswers = new ArrayList<>();
+        final Question question1 = new Question("1","Kert?", "general", 1, correctAnswers);
+        final List<Question> questions = new ArrayList<Question>();
+        questions.add(question1);
+        given(this.repositoryMock.getAllQuestions()).willReturn(questions);
 
         //when
         this.response.parse(this.servletTester.getResponses(this.request.generate()));
 
         //then
-        assertThat(this.response.getContent()).isEqualTo("any_question");
+        assertThat(this.response.getContent()).isEqualTo(questions.get(0).toString());
         assertThat(this.response.getStatus()).isEqualTo(200);
     }
 
@@ -57,7 +65,7 @@ public class QuestionServletTest {
         this.request.setMethod("GET");
         this.request.setURI("/question");
         this.request.setVersion("HTTP/1.0");
-        given(this.repositoryMock.getAllQuestions()).willReturn("any_question");
+        given(this.repositoryMock.getAllQuestions()).willReturn(new ArrayList<>());
 
         //when
         this.response.parse(this.servletTester.getResponses(this.request.generate()));

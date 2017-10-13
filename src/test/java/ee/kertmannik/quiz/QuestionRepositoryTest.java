@@ -1,6 +1,9 @@
 package ee.kertmannik.quiz;
 
+import ee.kertmannik.quiz.model.Question;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,7 +15,7 @@ public class QuestionRepositoryTest {
         QuestionRepository questionDatabase = new QuestionRepository();
 
         //when
-        String result = questionDatabase.getAllQuestions();
+        List<Question> result = questionDatabase.getAllQuestions();
 
         //then
         assertThat(result).isEqualTo(
