@@ -1,9 +1,10 @@
 package ee.kertmannik.quiz;
 
 import org.junit.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class QuestionDatabaseTest {
+public class QuestionRepositoryTest {
 
     @Test
     public void should_return_json_string() {
@@ -11,7 +12,7 @@ public class QuestionDatabaseTest {
         QuestionRepository questionDatabase = new QuestionRepository();
 
         //when
-        String result = questionDatabase.jsonAnswers();
+        String result = questionDatabase.getAllQuestions();
 
         //then
         assertThat(result).isEqualTo(
