@@ -29,27 +29,19 @@ public class QuestionServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        List<Question> questions = this.questionRepository.getAllQuestions();
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.setContentType("application/json");
-        String question = getQuestion(questions);
-        response.getWriter().print(question);
+        final String question = this.questionRepository.getOneQuestion(this.questionGetCounter);
+        try {
+            this.sendQuestion(response, question);
+        } catch (Exception e) {
+            System.out.println("Error!");
+            //this.sendErrorMessage(response);
+        }
         this.questionGetCounter += 1;
     }
 
-    private String getQuestion(List<Question> questions) {
-        Question question;
-        if (this.questionGetCounter == questions.size()) {
-            question = questions.get(0);
-        } else {
-            question = questions.get(randomIntegerGenerator(questions.size()));
-        }
-        Gson gson = new Gson();
-        return gson.toJson(question); //return question with the answer
-    }
-
-    private int randomIntegerGenerator(int maxNumber) {
-        Random rand = new Random();
-        return rand.nextInt(maxNumber);
+    private void sendQuestion(HttpServletResponse response, String question) throws IOException {
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/json");
+        response.getWriter().print(question);
     }
 }

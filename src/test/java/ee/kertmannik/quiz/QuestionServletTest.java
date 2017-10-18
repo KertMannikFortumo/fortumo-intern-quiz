@@ -6,7 +6,9 @@ import org.eclipse.jetty.testing.ServletTester;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,16 +48,17 @@ public class QuestionServletTest {
         this.request.setURI("/question");
         this.request.setVersion("HTTP/1.0");
         final List<String> correctAnswers = new ArrayList<>();
-        final Question question1 = new Question("1","Kert?", "general", 1, correctAnswers);
+        final Question question = new Question("1","Kert?", "general", 1, correctAnswers);
         final List<Question> questions = new ArrayList<Question>();
-        questions.add(question1);
+        questions.add(question);
         given(this.repositoryMock.getAllQuestions()).willReturn(questions);
 
         //when
         this.response.parse(this.servletTester.getResponses(this.request.generate()));
 
         //then
-        assertThat(this.response.getContent()).isEqualTo(questions.get(0).toString());
+        System.out.println(this.response.getContent());
+        assertThat(this.response.getContent()).isEqualTo(questions);
         assertThat(this.response.getStatus()).isEqualTo(200);
     }
 

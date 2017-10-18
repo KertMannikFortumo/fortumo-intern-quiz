@@ -10,15 +10,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class QuestionRepositoryTest {
 
     @Test
-    public void should_return_json_string() {
+    public void should_return_answers_from_gist_file() {
         //given
-        QuestionRepository questionDatabase = new QuestionRepository();
+        QuestionRepository questionRepository = new QuestionRepository();
 
         //when
-        List<Question> result = questionDatabase.getAllQuestions();
+        List<Question> result = questionRepository.getAllQuestions();
 
         //then
         assertThat(result).isEqualTo(
-                "[{\"id\":\"42\",\"question\":\"Kes on tubli poiss?\",\"category\":\"general\",\"difficulty\":1}]");
+                "");
     }
 }
