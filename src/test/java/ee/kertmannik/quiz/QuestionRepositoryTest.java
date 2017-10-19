@@ -1,6 +1,5 @@
 package ee.kertmannik.quiz;
 
-import ee.kertmannik.quiz.model.CorrectAnswer;
 import ee.kertmannik.quiz.model.Question;
 import org.junit.Test;
 

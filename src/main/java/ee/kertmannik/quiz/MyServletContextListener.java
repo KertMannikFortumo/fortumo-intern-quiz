@@ -10,7 +10,7 @@ import javax.servlet.annotation.WebListener;
 @WebListener("MyServletContextListener")
 public class MyServletContextListener implements ServletContextListener {
 
-    public static final String ANSWER_VALIDATOR = "AnswerValidator";
+    public static final String ANSWER_CONTROLLER = "AnswerController";
     public static final String QUESTION_CONTROLLER = "QuestionController";
 
     @Override
@@ -23,16 +23,11 @@ public class MyServletContextListener implements ServletContextListener {
         RawQuestionParser rawQuestionParser = new RawQuestionParser();
         List<Question> questions = rawQuestionParser.splittingRawQuestions(rawData);
         QuestionRepository questionRepository = new QuestionRepository(questions);
+        AnswerValidator answerValidator = new AnswerValidator(questionRepository);
         QuestionController questionController = new QuestionController(questionRepository);
+        AnswerController answerController = new AnswerController(answerValidator);
         sce.getServletContext().setAttribute(QUESTION_CONTROLLER, questionController);
-
-        final AnswerValidator answerValidator = this.createAnswerValidator();
-
-        sce.getServletContext().setAttribute(ANSWER_VALIDATOR, answerValidator);
-    }
-
-    protected AnswerValidator createAnswerValidator() {
-        return new AnswerValidator();
+        sce.getServletContext().setAttribute(ANSWER_CONTROLLER, answerController);
     }
 
     @Override

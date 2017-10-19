@@ -6,22 +6,18 @@ import org.eclipse.jetty.testing.ServletTester;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 public class QuestionServletTest {
+
     private ServletTester servletTester;
     private HttpTester response;
     private HttpTester request;
     private QuestionRepository repositoryMock;
-
 
     @Before
     public void initialize() throws Exception {
@@ -41,14 +37,14 @@ public class QuestionServletTest {
     }
 
     @Test
-    public void should_return_statuscode_200_and_question_if_header_is_present()throws Exception{
+    public void should_return_statuscode_200_and_question_if_header_is_present() throws Exception {
         //given
         this.request.setHeader("x-player-name", "Vahur");
         this.request.setMethod("GET");
         this.request.setURI("/question");
         this.request.setVersion("HTTP/1.0");
         final List<String> correctAnswers = new ArrayList<>();
-        final Question question = new Question("1","Kert?", "general", 1, correctAnswers);
+        final Question question = new Question("1", "Kert?", "general", 1, correctAnswers);
         final List<Question> questions = new ArrayList<Question>();
         questions.add(question);
         //given(this.repositoryMock.getAllQuestions()).willReturn(questions);
@@ -63,7 +59,7 @@ public class QuestionServletTest {
     }
 
     @Test
-    public void should_return_statuscode_400_if_header_is_not_present()throws Exception{
+    public void should_return_statuscode_400_if_header_is_not_present() throws Exception {
         //given
         this.request.setMethod("GET");
         this.request.setURI("/question");

@@ -8,7 +8,7 @@ public class Question {
     private String question;
     private String category;
     private int difficulty;
-    private List<String> correctAnswers;
+    private transient List<String> correctAnswers;
 
     public Question(String questionId, String question, String category, int difficulty, List<String> correctAnswers) {
         this.questionId = questionId;

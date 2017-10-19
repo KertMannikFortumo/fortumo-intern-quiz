@@ -2,7 +2,6 @@ package ee.kertmannik.quiz;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import ee.kertmannik.quiz.model.Answer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,27 +12,39 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static ee.kertmannik.quiz.MyServletContextListener.ANSWER_CONTROLLER;
+
 @WebServlet(urlPatterns = "/answer")
 public class AnswerServlet extends HttpServlet {
 
-    public static final String ANSWER_VALIDATOR = MyServletContextListener.ANSWER_VALIDATOR;
-
     private Gson gson = new Gson();
-    private AnswerValidator answerValidator;
+    private AnswerController answerController;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        this.answerValidator = (AnswerValidator) config.getServletContext().getAttribute(ANSWER_VALIDATOR);
+        this.answerController = (AnswerController) config.getServletContext().getAttribute(ANSWER_CONTROLLER);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final String rawRequestBody = this.getRequestBody(req);
+        final String result = answerController.valuateAnswer(rawRequestBody);
         try {
-            this.validateAnswerAndSendResult(resp, rawRequestBody);
+            this.sendResponse(resp, result, HttpServletResponse.SC_OK);
         } catch (JsonSyntaxException e) {
             this.sendErrorMessage(resp);
         }
+    }
+
+    private void sendErrorMessage(HttpServletResponse resp) throws IOException {
+        this.sendResponse(resp, "Could not parse request body.", HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+    private void sendResponse(HttpServletResponse resp, String responseBody, int statusCode) throws IOException {
+        resp.setStatus(statusCode);
+        resp.setContentType("plain/text");
+        resp.getWriter().write(responseBody);
+        resp.getWriter().close();
     }
 
     private String getRequestBody(final HttpServletRequest request) throws IOException {
@@ -48,23 +59,5 @@ public class AnswerServlet extends HttpServlet {
             stringBuilder.append(line);
         }
         return stringBuilder.toString();
-    }
-
-    private void validateAnswerAndSendResult(HttpServletResponse resp, String rawRequestBody) throws IOException {
-        Answer answer = this.gson.fromJson(rawRequestBody, Answer.class);
-        final String result = this.answerValidator.validateAnswer(answer);
-
-        this.sendResponse(resp, result, HttpServletResponse.SC_OK);
-    }
-
-    private void sendErrorMessage(HttpServletResponse resp) throws IOException {
-        this.sendResponse(resp, "Could not parse request body.", HttpServletResponse.SC_BAD_REQUEST);
-    }
-
-    private void sendResponse(HttpServletResponse resp, String responseBody, int statusCode) throws IOException {
-        resp.setStatus(statusCode);
-        resp.setContentType("plain/text");
-        resp.getWriter().write(responseBody);
-        resp.getWriter().close();
     }
 }

@@ -1,6 +1,5 @@
 package ee.kertmannik.quiz;
 
-import ee.kertmannik.quiz.model.CorrectAnswer;
 import ee.kertmannik.quiz.model.Question;
 
 import java.util.ArrayList;
@@ -28,16 +27,5 @@ public class RawQuestionParser {
             }
         }
         return questions;
-    }
-
-    public List<CorrectAnswer> parseAnswersFromQuestions (List<Question> questions) {
-        List<CorrectAnswer> correctAnswers = new ArrayList<CorrectAnswer>();
-        for (Question question : questions) {
-            final List<String> answers = question.getCorrectAnswers();
-            final String questionId = question.getQuestionId();
-            final CorrectAnswer correctAnswer = new CorrectAnswer(questionId, answers);
-            correctAnswers.add(correctAnswer);
-        }
-        return correctAnswers;
     }
 }
