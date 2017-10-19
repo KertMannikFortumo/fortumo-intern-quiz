@@ -24,10 +24,20 @@ public class MyServletContextListener implements ServletContextListener {
         List<Question> questions = rawQuestionParser.splittingRawQuestions(rawData);
         QuestionRepository questionRepository = new QuestionRepository(questions);
         AnswerValidator answerValidator = new AnswerValidator(questionRepository);
-        QuestionController questionController = new QuestionController(questionRepository);
-        AnswerController answerController = new AnswerController(answerValidator);
+
+        QuestionController questionController = getQuestionController(questionRepository);
+
+        AnswerController answerController = getAnswerController(answerValidator);
         sce.getServletContext().setAttribute(QUESTION_CONTROLLER, questionController);
         sce.getServletContext().setAttribute(ANSWER_CONTROLLER, answerController);
+    }
+
+    protected AnswerController getAnswerController(AnswerValidator answerValidator) {
+        return new AnswerController(answerValidator);
+    }
+
+    protected QuestionController getQuestionController(QuestionRepository questionRepository) {
+        return new QuestionController(questionRepository);
     }
 
     @Override
