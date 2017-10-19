@@ -21,7 +21,7 @@ public class AnswerValidatorTest {
         Answer testAnswer = new Answer("42", "Toomas");
 
         //when
-        String result = answerValidator.validateAnswer(testAnswer);
+        String result = this.answerValidator.validateAnswer(testAnswer);
 
         //then
         assertThat("wrong").isEqualTo(result);

@@ -18,7 +18,6 @@ public class QuestionRepositoryTest {
         List<Question> result = questionRepository.getAllQuestions();
 
         //then
-        assertThat(result).isEqualTo(
-                "");
+        assertThat(result).isEqualTo("");
     }
 }

@@ -2,54 +2,42 @@ package ee.kertmannik.quiz;
 
 import com.google.gson.Gson;
 import ee.kertmannik.quiz.model.Question;
+import ee.kertmannik.quiz.model.QuestionWithoutAnswer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionRepository {
 
-
-    private List<Question> getAllQuestions() {
-        return getQuestionsFromGist();
+    public List<Question> getAllQuestions() {
+        return this.getQuestionsFromGist();
     }
 
     private List<Question> getQuestionsFromGist() {
         final GetRequestFromGist getRequestFromGist = new GetRequestFromGist();
+        final RawQuestionParser rawQuestionParser = new RawQuestionParser();
         final String rawData = getRequestFromGist.questionsRequest();
-        return splittingRawQuestions(rawData);
-    }
-
-    private List<Question> splittingRawQuestions(String rawData) {
-        String[] rawQuestions = rawData.split("\n");
-        List<Question> questions = new ArrayList<Question>();
-        for (String rawQuestion : rawQuestions) {
-            try {
-                String[] splittedQuestion = rawQuestion.split(";");
-                List<String> correctAnswers = new ArrayList<>();
-                for (int i = 4; i < splittedQuestion.length; i++) {
-                    correctAnswers.add(splittedQuestion[i]);
-                }
-                Question question = new Question(
-                        splittedQuestion[0], splittedQuestion[1],
-                        splittedQuestion[2], Integer.parseInt(splittedQuestion[3]),
-                        correctAnswers);
-                questions.add(question);
-            } catch (ArrayIndexOutOfBoundsException exception) {
-                throw new ArrayIndexOutOfBoundsException("Incorrect question.");
-            }
-        }
-        return questions;
+        return rawQuestionParser.splittingRawQuestions(rawData);
     }
 
     public String getOneQuestion(int questionGetCounter) {
-        List<Question> questions = getAllQuestions();
+        final List<Question> questions = MyServletContextListener.questions;
         Question question;
+
         if (questionGetCounter >= questions.size()) {
             question = questions.get(0);
         } else {
             question = questions.get(questionGetCounter);
         }
         Gson gson = new Gson();
-        return gson.toJson(question); //return question with the answer
+        return gson.toJson(this.sendQuestionWithoutAnswer(question));
+    }
+
+    private QuestionWithoutAnswer sendQuestionWithoutAnswer(Question question) {
+        QuestionWithoutAnswer sendableQuestion = null;
+        sendableQuestion.setCategory(question.getCategory());
+        sendableQuestion.setDifficulty(question.getDifficulty());
+        sendableQuestion.setQuestion(question.getQuestion());
+        sendableQuestion.setQuestionId(question.getQuestionId());
+        return sendableQuestion;
     }
 }

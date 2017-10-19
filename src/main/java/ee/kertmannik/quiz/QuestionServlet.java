@@ -1,11 +1,6 @@
 package ee.kertmannik.quiz;
 
-import com.google.gson.Gson;
-import ee.kertmannik.quiz.model.Question;
-
 import java.io.IOException;
-import java.util.List;
-import java.util.Random;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,9 +27,8 @@ public class QuestionServlet extends HttpServlet {
         final String question = this.questionRepository.getOneQuestion(this.questionGetCounter);
         try {
             this.sendQuestion(response, question);
-        } catch (Exception e) {
-            System.out.println("Error!");
-            //this.sendErrorMessage(response);
+        } catch (Exception exception) {
+            System.out.println("Error sending the question! " + exception);
         }
         this.questionGetCounter += 1;
     }
