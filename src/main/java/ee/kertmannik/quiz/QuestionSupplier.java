@@ -6,17 +6,20 @@ import okhttp3.Response;
 
 import java.io.IOException;
 
-public class GetRequestFromGist {
+public class QuestionSupplier {
 
-    public static final String URL =
-            "https://gist.githubusercontent.com/KertMannikFortumo/6b17dca9c9ae8ff089d3c50aa7a03329/raw/01cbbd75ed39d917d008881ee6db8f140663a17a/gistfile1.txt";
+    private String url;
+
+    QuestionSupplier(String url) {
+        this.url = url;
+    }
 
     public String questionsRequest() {
         try {
-            final String resultOkHttp = this.run(URL);
+            final String resultOkHttp = this.run(this.url);
             return resultOkHttp;
         } catch (IOException e) {
-            return "";
+            throw new RuntimeException("Could not read raw questions at the url." + this.url);
         }
     }
 
@@ -30,7 +33,7 @@ public class GetRequestFromGist {
         if (response.isSuccessful()) {
             return response.body().string();
         } else {
-            return "";
+            throw new RuntimeException("Could not read raw questions at the url." + this.url);
         }
     }
 }

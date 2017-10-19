@@ -8,34 +8,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static ee.kertmannik.quiz.MyServletContextListener.QUESTION_CONTROLLER;
+
 @WebServlet(urlPatterns = "/question")
 public class QuestionServlet extends HttpServlet {
 
-    public static final String QUESTION_REPOSITORY = MyServletContextListener.QUESTION_REPOSITORY;
-    private QuestionRepository questionRepository;
-    private int questionGetCounter;
+    private QuestionController questionController;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        this.questionRepository = (QuestionRepository) config.getServletContext().getAttribute(
-                QUESTION_REPOSITORY);
-        this.questionGetCounter = 0;
+        this.questionController = (QuestionController) config.getServletContext().getAttribute(
+                QUESTION_CONTROLLER);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        final String question = this.questionRepository.getOneQuestion(this.questionGetCounter);
-        try {
-            this.sendQuestion(response, question);
-        } catch (Exception exception) {
-            System.out.println("Error sending the question! " + exception);
-        }
-        this.questionGetCounter += 1;
-    }
-
-    private void sendQuestion(HttpServletResponse response, String question) throws IOException {
+        final String responseBody = questionController.getNextQuestionJson();
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
-        response.getWriter().print(question);
+        response.getWriter().print(responseBody);
     }
 }

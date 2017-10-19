@@ -1,7 +1,5 @@
 package ee.kertmannik.quiz;
 
-import com.sun.corba.se.spi.logging.CORBALogDomains;
-import ee.kertmannik.quiz.model.Answer;
 import ee.kertmannik.quiz.model.CorrectAnswer;
 import ee.kertmannik.quiz.model.Question;
 

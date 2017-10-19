@@ -31,7 +31,7 @@ public class QuestionServletTest {
         this.servletTester.addServlet(ee.kertmannik.quiz.QuestionServlet.class, "/question");
         this.servletTester.addFilter(IdentificationFilter.class, "/*", 0);
         this.servletTester.addEventListener(new MyServletContextListener() {
-            @Override
+
             protected QuestionRepository createQuestionRepository() {
                 repositoryMock = mock(QuestionRepository.class);
                 return repositoryMock;
@@ -51,7 +51,7 @@ public class QuestionServletTest {
         final Question question = new Question("1","Kert?", "general", 1, correctAnswers);
         final List<Question> questions = new ArrayList<Question>();
         questions.add(question);
-        given(this.repositoryMock.getAllQuestions()).willReturn(questions);
+        //given(this.repositoryMock.getAllQuestions()).willReturn(questions);
 
         //when
         this.response.parse(this.servletTester.getResponses(this.request.generate()));
@@ -68,7 +68,7 @@ public class QuestionServletTest {
         this.request.setMethod("GET");
         this.request.setURI("/question");
         this.request.setVersion("HTTP/1.0");
-        given(this.repositoryMock.getAllQuestions()).willReturn(new ArrayList<>());
+        //given(this.repositoryMock.getAllQuestions()).willReturn(new ArrayList<>());
 
         //when
         this.response.parse(this.servletTester.getResponses(this.request.generate()));

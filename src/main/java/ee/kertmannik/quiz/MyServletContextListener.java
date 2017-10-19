@@ -1,6 +1,5 @@
 package ee.kertmannik.quiz;
 
-import ee.kertmannik.quiz.model.CorrectAnswer;
 import ee.kertmannik.quiz.model.Question;
 
 import java.util.List;
@@ -12,34 +11,28 @@ import javax.servlet.annotation.WebListener;
 public class MyServletContextListener implements ServletContextListener {
 
     public static final String ANSWER_VALIDATOR = "AnswerValidator";
-    public static final String QUESTION_REPOSITORY = "QuestionRepository";
-    public static List<Question> questions;
-    public static List<CorrectAnswer> answers;
+    public static final String QUESTION_CONTROLLER = "QuestionController";
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+        String gistUrl =
+                "https://gist.githubusercontent.com/KertMannikFortumo/6b17dca9c9ae8ff089d3c50aa7a03329/raw/01cbbd75ed39d917d008881ee6db8f140663a17a/gistfile1.txt";
+        QuestionSupplier questionSupplier = new QuestionSupplier(gistUrl);
+        String rawData = questionSupplier.questionsRequest();
+
+        RawQuestionParser rawQuestionParser = new RawQuestionParser();
+        List<Question> questions = rawQuestionParser.splittingRawQuestions(rawData);
+        QuestionRepository questionRepository = new QuestionRepository(questions);
+        QuestionController questionController = new QuestionController(questionRepository);
+        sce.getServletContext().setAttribute(QUESTION_CONTROLLER, questionController);
+
         final AnswerValidator answerValidator = this.createAnswerValidator();
-        final QuestionRepository questionRepository = this.createQuestionRepository();
 
         sce.getServletContext().setAttribute(ANSWER_VALIDATOR, answerValidator);
-        sce.getServletContext().setAttribute(QUESTION_REPOSITORY, questionRepository);
-
-        try {
-            RawQuestionParser rawQuestionParser = new RawQuestionParser();
-
-            questions = questionRepository.getAllQuestions();
-            answers = rawQuestionParser.parseAnswersFromQuestions(questions);
-        } catch (Exception exception) {
-            System.out.println("Problem getting the questions from gist. " + exception);
-        }
     }
 
     protected AnswerValidator createAnswerValidator() {
         return new AnswerValidator();
-    }
-
-    protected QuestionRepository createQuestionRepository() {
-        return new QuestionRepository();
     }
 
     @Override
