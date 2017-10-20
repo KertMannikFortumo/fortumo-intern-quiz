@@ -1,36 +1,46 @@
 package ee.kertmannik.quiz;
 
+import ee.kertmannik.quiz.model.Question;
+
+import java.util.List;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 @WebListener("MyServletContextListener")
-public class MyServletContextListener  implements ServletContextListener {
+public class MyServletContextListener implements ServletContextListener {
 
-    public static final String ANSWER_VALIDATOR = "AnswerValidator";
-    public static final String QUESTION_REPOSITORY = "QuestionRepository";
-
+    public static final String ANSWER_CONTROLLER = "AnswerController";
+    public static final String QUESTION_CONTROLLER = "QuestionController";
+    public static final String GIST_URL =
+            "https://gist.githubusercontent.com/KertMannikFortumo/6b17dca9c9ae8ff089d3c50aa7a03329/raw/01cbbd75ed39d917d008881ee6db8f140663a17a/gistfile1.txt";
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        final AnswerValidator answerValidator = this.createAnswerValidator();
-        final QuestionRepository questionRepository = this.createQuestionRepository();
 
-        sce.getServletContext().setAttribute(ANSWER_VALIDATOR, answerValidator);
-        sce.getServletContext().setAttribute(QUESTION_REPOSITORY, questionRepository);
+        QuestionSupplier questionSupplier = new QuestionSupplier(GIST_URL);
+        String rawData = questionSupplier.questionsRequest();
 
+        RawQuestionParser rawQuestionParser = new RawQuestionParser();
+        List<Question> questions = rawQuestionParser.splittingRawQuestions(rawData);
+        QuestionRepository questionRepository = new QuestionRepository(questions);
+        AnswerValidator answerValidator = new AnswerValidator(questionRepository);
+
+        QuestionController questionController = this.getQuestionController(questionRepository);
+
+        AnswerController answerController = this.getAnswerController(answerValidator);
+        sce.getServletContext().setAttribute(QUESTION_CONTROLLER, questionController);
+        sce.getServletContext().setAttribute(ANSWER_CONTROLLER, answerController);
     }
 
-    protected AnswerValidator createAnswerValidator() {
-        return new AnswerValidator();
+    protected AnswerController getAnswerController(AnswerValidator answerValidator) {
+        return new AnswerController(answerValidator);
     }
 
-    protected QuestionRepository createQuestionRepository() {
-        return new QuestionRepository();
+    protected QuestionController getQuestionController(QuestionRepository questionRepository) {
+        return new QuestionController(questionRepository);
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-
     }
-
 }

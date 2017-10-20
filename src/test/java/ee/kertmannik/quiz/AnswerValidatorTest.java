@@ -4,24 +4,33 @@ import ee.kertmannik.quiz.model.Answer;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 public class AnswerValidatorTest {
 
-    AnswerValidator answerValidator;
+    private QuestionRepository mock;
+    private AnswerValidator answerValidator;
 
     @Before
     public void initialize() throws Exception {
-        this.answerValidator = new AnswerValidator();
+        this.mock = mock(QuestionRepository.class);
+        this.answerValidator = new AnswerValidator(mock);
     }
 
     @Test
     public void should_return_wrong_if_answer_for_question_42_is_wrong() {
         //given
         Answer testAnswer = new Answer("42", "Toomas");
+        List<String> answers = Arrays.asList("Lars", "Martin");
+        given(this.mock.getAnswersById("42")).willReturn(answers);
 
         //when
-        String result = answerValidator.validateAnswer(testAnswer);
+        String result = this.answerValidator.validateAnswer(testAnswer);
 
         //then
         assertThat("wrong").isEqualTo(result);
@@ -30,10 +39,12 @@ public class AnswerValidatorTest {
     @Test
     public void should_return_correct_if_answer_for_question_42_is_right() {
         //given
-        Answer testAnswer = new Answer("42", "Lars");
+        Answer testAnswer = new Answer("42", "Toomas");
+        List<String> answers = Arrays.asList("Toomas", "Martin");
+        given(this.mock.getAnswersById("42")).willReturn(answers);
 
         //when
-        String result = answerValidator.validateAnswer(testAnswer);
+        String result = this.answerValidator.validateAnswer(testAnswer);
 
         //then
         assertThat("correct").isEqualTo(result);

@@ -8,27 +8,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static ee.kertmannik.quiz.MyServletContextListener.QUESTION_CONTROLLER;
+
 @WebServlet(urlPatterns = "/question")
 public class QuestionServlet extends HttpServlet {
 
-    public static final String QUESTION_REPOSITORY = MyServletContextListener.QUESTION_REPOSITORY;
-    
-    private QuestionRepository questionRepository;
+    private QuestionController questionController;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        this.questionRepository = (QuestionRepository) config.getServletContext().getAttribute(
-                QUESTION_REPOSITORY);
+        this.questionController = (QuestionController) config.getServletContext().getAttribute(
+                QUESTION_CONTROLLER);
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
-        final String responseBody = this.questionRepository.getAllQuestions();
-        final String json = responseBody;
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        final String responseBody = questionController.getNextQuestionJson();
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
-        response.getWriter().print(json);
+        response.getWriter().print(responseBody);
     }
 }
