@@ -28,7 +28,7 @@ public class QuestionRepositoryTest {
     }
 
     @Test
-    public void should_return_the_question_if_the_list_has_only_one_element(){
+    public void should_return_the_question_if_the_list_has_only_one_element() {
         //given
         List<Question> questions = new ArrayList<>();
         QuestionRepository questionRepository = new QuestionRepository(questions);
@@ -42,16 +42,15 @@ public class QuestionRepositoryTest {
         assertThat(result).isEqualTo(question);
     }
 
-
-
     @Test
-    public void should_return_the_second_question_if_the_list_has_multiple_elements(){
+    public void should_return_the_second_question_if_the_list_has_multiple_elements() {
         //given
         List<Question> questions = new ArrayList<>();
         QuestionRepository questionRepository = new QuestionRepository(questions);
         Question question = new Question("1", "Hello?", "general", 1, null);
         Question secondQuestion = new Question("2", "Hello?", "general", 1, null);
-        questions.add(question); questions.add(secondQuestion);
+        questions.add(question);
+        questions.add(secondQuestion);
 
         //when
         Question result = questionRepository.getNextQuestion();
@@ -61,13 +60,14 @@ public class QuestionRepositoryTest {
     }
 
     @Test
-    public void should_return_the_first_question_if_the_last_question_was_returned(){
+    public void should_return_the_first_question_if_the_last_question_was_returned() {
         //given
         List<Question> questions = new ArrayList<>();
         QuestionRepository questionRepository = new QuestionRepository(questions);
         Question question = new Question("1", "Hello?", "general", 1, null);
         Question secondQuestion = new Question("2", "Hello?", "general", 1, null);
-        questions.add(question); questions.add(secondQuestion);
+        questions.add(question);
+        questions.add(secondQuestion);
 
         //when
         Question result = questionRepository.getNextQuestion();
@@ -78,7 +78,7 @@ public class QuestionRepositoryTest {
     }
 
     @Test
-    public void should_return_the_second_question_if_the_counter_was_reset_and_two_new_second_requests_were_made(){
+    public void should_return_the_second_question_if_the_counter_was_reset_and_two_new_second_requests_were_made() {
         //given
         List<Question> questions = new ArrayList<>();
         QuestionRepository questionRepository = new QuestionRepository(questions);

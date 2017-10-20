@@ -1,11 +1,9 @@
 package ee.kertmannik.quiz;
 
 import ee.kertmannik.quiz.model.Answer;
-import ee.kertmannik.quiz.model.Question;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,7 +27,7 @@ public class AnswerValidatorTest {
         //given
         Answer testAnswer = new Answer("42", "Toomas");
         List<String> answers = Arrays.asList("Lars", "Martin");
-        given(this.mock.getAnswerById("42")).willReturn(answers);
+        given(this.mock.getAnswersById("42")).willReturn(answers);
 
         //when
         String result = this.answerValidator.validateAnswer(testAnswer);
@@ -43,7 +41,7 @@ public class AnswerValidatorTest {
         //given
         Answer testAnswer = new Answer("42", "Toomas");
         List<String> answers = Arrays.asList("Toomas", "Martin");
-        given(this.mock.getAnswerById("42")).willReturn(answers);
+        given(this.mock.getAnswersById("42")).willReturn(answers);
 
         //when
         String result = this.answerValidator.validateAnswer(testAnswer);

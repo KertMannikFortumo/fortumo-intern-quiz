@@ -25,7 +25,7 @@ public class QuestionRepository {
         }
     }
 
-    public List<String> getAnswerById (String id) {
+    public List<String> getAnswersById(String id) {
         for (Question question : questions) {
             if (question.getQuestionId().equals(id)) {
                 return question.getCorrectAnswers();

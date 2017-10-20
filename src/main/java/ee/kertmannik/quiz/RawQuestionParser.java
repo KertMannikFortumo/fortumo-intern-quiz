@@ -13,6 +13,9 @@ public class RawQuestionParser {
         for (String rawQuestion : rawQuestions) {
             try {
                 String[] splittedQuestion = rawQuestion.split(";");
+                if (splittedQuestion.length<5) {
+                    throw new QuizException("Not enough fields in question " + rawQuestion);
+                }
                 List<String> correctAnswers = new ArrayList<>();
                 for (int i = 4; i < splittedQuestion.length; i++) {
                     correctAnswers.add(splittedQuestion[i]);
@@ -23,7 +26,7 @@ public class RawQuestionParser {
                         correctAnswers);
                 questions.add(question);
             } catch (ArrayIndexOutOfBoundsException exception) {
-                throw new ArrayIndexOutOfBoundsException("Incorrect question.");
+                throw new QuizException("Incorrect raw Data.");
             }
         }
         return questions;

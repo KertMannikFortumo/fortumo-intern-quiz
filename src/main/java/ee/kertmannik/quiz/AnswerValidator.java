@@ -13,10 +13,10 @@ public class AnswerValidator {
     }
 
     public String validateAnswer(Answer answer) {
-        final String answerId = answer.getQuestionId();
+        final String questionId = answer.getQuestionId();
         final String answerText = answer.getAnswer();
 
-        List<String> correctAnswers = questionRepository.getAnswerById(answerId);
+        List<String> correctAnswers = questionRepository.getAnswersById(questionId);
         if (correctAnswers.contains(answerText)) {
             return "correct";
         } else {

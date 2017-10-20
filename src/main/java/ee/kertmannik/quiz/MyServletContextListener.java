@@ -12,11 +12,11 @@ public class MyServletContextListener implements ServletContextListener {
 
     public static final String ANSWER_CONTROLLER = "AnswerController";
     public static final String QUESTION_CONTROLLER = "QuestionController";
-
+    public static final String gistUrl =
+            "https://gist.githubusercontent.com/KertMannikFortumo/6b17dca9c9ae8ff089d3c50aa7a03329/raw/01cbbd75ed39d917d008881ee6db8f140663a17a/gistfile1.txt";
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        String gistUrl =
-                "https://gist.githubusercontent.com/KertMannikFortumo/6b17dca9c9ae8ff089d3c50aa7a03329/raw/01cbbd75ed39d917d008881ee6db8f140663a17a/gistfile1.txt";
+
         QuestionSupplier questionSupplier = new QuestionSupplier(gistUrl);
         String rawData = questionSupplier.questionsRequest();
 
