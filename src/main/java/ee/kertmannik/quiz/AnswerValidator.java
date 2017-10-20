@@ -15,12 +15,15 @@ public class AnswerValidator {
     public String validateAnswer(Answer answer) {
         final String questionId = answer.getQuestionId();
         final String answerText = answer.getAnswer();
-
-        List<String> correctAnswers = questionRepository.getAnswersById(questionId);
-        if (correctAnswers.contains(answerText)) {
-            return "correct";
-        } else {
-            return "wrong";
+        try {
+            List<String> correctAnswers = questionRepository.getAnswersById(questionId);
+            if (correctAnswers.contains(answerText)) {
+                return "correct";
+            } else {
+                return "wrong";
+            }
+        } catch (QuizException exception) {
+            return "invalid Id";
         }
     }
 }
