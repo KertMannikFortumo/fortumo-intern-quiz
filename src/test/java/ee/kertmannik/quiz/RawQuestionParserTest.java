@@ -32,7 +32,6 @@ public class RawQuestionParserTest {
 
         //when
         List<Question> result = rawQuestionParser.splittingRawQuestions("1;Who is a good boy?;general;1;Lars;Oskar");
-        System.out.println(result);
         //then
         assertThat(result).hasSize(1);
         assertThat(result.get(0).getCategory()).isEqualTo("general");

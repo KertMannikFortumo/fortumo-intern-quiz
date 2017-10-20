@@ -1,14 +1,11 @@
 package ee.kertmannik.quiz;
 
-import ee.kertmannik.quiz.model.Answer;
 import org.eclipse.jetty.testing.HttpTester;
 import org.eclipse.jetty.testing.ServletTester;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -17,7 +14,7 @@ public class AnswerServletTest {
     private ServletTester servletTester;
     private HttpTester request;
     private HttpTester response;
-    private AnswerValidator validatorMock;
+    private AnswerController controllerMock;
 
     @Before
     public void initialize() throws Exception {
@@ -27,9 +24,10 @@ public class AnswerServletTest {
         this.servletTester.addServlet(ee.kertmannik.quiz.AnswerServlet.class, "/answer");
         this.servletTester.addFilter(IdentificationFilter.class, "/*", 0);
         this.servletTester.addEventListener(new MyServletContextListener() {
-            protected AnswerValidator createAnswerValidator() {
-                validatorMock = mock(AnswerValidator.class);
-                return validatorMock;
+            @Override
+            protected AnswerController getAnswerController(AnswerValidator answerValidator) {
+                controllerMock = mock(AnswerController.class);
+                return controllerMock;
             }
         });
         this.servletTester.start();
@@ -43,14 +41,14 @@ public class AnswerServletTest {
         this.request.setURI("/answer");
         this.request.setContent("{\"question-id\":\"42\",\"answer\":\"anything\"}");
         this.request.setVersion("HTTP/1.0");
-        given(this.validatorMock.validateAnswer(any(Answer.class))).willReturn("any_answer");
+        given(this.controllerMock.valuateAnswer(this.request.getContent())).willReturn("any_answer");
 
         //when
         this.response.parse(this.servletTester.getResponses(this.request.generate()));
 
         //then
-        assertThat(this.response.getStatus()).isEqualTo(200);
         assertThat(this.response.getContent()).isEqualTo("any_answer");
+        assertThat(this.response.getStatus()).isEqualTo(200);
     }
 
     @Test
@@ -63,11 +61,10 @@ public class AnswerServletTest {
         this.request.setVersion("HTTP/1.0");
 
         //when
-        try {
-            this.response.parse(this.servletTester.getResponses(this.request.generate()));
-            fail("Should throw QuizException because content is incorrect json");
-        } catch (QuizException exception) {
+        this.response.parse(this.servletTester.getResponses(this.request.generate()));
 
-        }
+        //then
+        assertThat(this.response.getStatus()).isEqualTo(400);
+        assertThat(this.response.getContent()).isEqualTo("Could not parse request body.");
     }
 }

@@ -12,8 +12,10 @@ public class QuestionSupplierTest {
     @Test
     public void Should_return_response_Body_as_String() throws Exception {
         //given
-        QuestionSupplier questionSupplier = new QuestionSupplier("v1/chat");
         MockWebServer server = new MockWebServer();
+        server.start();
+        HttpUrl baseUrl = server.url("/v1/chat/");
+        QuestionSupplier questionSupplier = new QuestionSupplier(baseUrl.toString());
         server.enqueue(new MockResponse().setBody("Lars is the best!!!"));
         //when
         String result = questionSupplier.questionsRequest();

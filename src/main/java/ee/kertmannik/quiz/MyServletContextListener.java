@@ -25,9 +25,9 @@ public class MyServletContextListener implements ServletContextListener {
         QuestionRepository questionRepository = new QuestionRepository(questions);
         AnswerValidator answerValidator = new AnswerValidator(questionRepository);
 
-        QuestionController questionController = getQuestionController(questionRepository);
+        QuestionController questionController = this.getQuestionController(questionRepository);
 
-        AnswerController answerController = getAnswerController(answerValidator);
+        AnswerController answerController = this.getAnswerController(answerValidator);
         sce.getServletContext().setAttribute(QUESTION_CONTROLLER, questionController);
         sce.getServletContext().setAttribute(ANSWER_CONTROLLER, answerController);
     }

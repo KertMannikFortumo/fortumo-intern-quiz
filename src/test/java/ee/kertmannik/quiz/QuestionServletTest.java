@@ -1,6 +1,5 @@
 package ee.kertmannik.quiz;
 
-import ee.kertmannik.quiz.model.Question;
 import org.eclipse.jetty.testing.HttpTester;
 import org.eclipse.jetty.testing.ServletTester;
 import org.junit.Before;

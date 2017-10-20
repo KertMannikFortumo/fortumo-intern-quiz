@@ -20,7 +20,7 @@ public class AnswerController {
         try {
             Answer answer = this.gson.fromJson(rawRequest, Answer.class);
             return answerValidator.validateAnswer(answer);
-        }catch (JsonSyntaxException exception) {
+        } catch (JsonSyntaxException exception) {
             throw new QuizException("Invalid json");
         }
     }

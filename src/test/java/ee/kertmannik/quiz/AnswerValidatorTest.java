@@ -15,17 +15,24 @@ import static org.mockito.Mockito.mock;
 
 public class AnswerValidatorTest {
 
+    private QuestionRepository mock;
+    private AnswerValidator answerValidator;
+
+    @Before
+    public void initialize() throws Exception {
+        this.mock = mock(QuestionRepository.class);
+        this.answerValidator = new AnswerValidator(mock);
+    }
+
     @Test
     public void should_return_wrong_if_answer_for_question_42_is_wrong() {
         //given
-        QuestionRepository mock = mock(QuestionRepository.class);
-        AnswerValidator answerValidator = new AnswerValidator(mock);
         Answer testAnswer = new Answer("42", "Toomas");
         List<String> answers = Arrays.asList("Lars", "Martin");
-        given(mock.getAnswerById("42")).willReturn(answers);
+        given(this.mock.getAnswerById("42")).willReturn(answers);
 
         //when
-        String result = answerValidator.validateAnswer(testAnswer);
+        String result = this.answerValidator.validateAnswer(testAnswer);
 
         //then
         assertThat("wrong").isEqualTo(result);
@@ -34,14 +41,12 @@ public class AnswerValidatorTest {
     @Test
     public void should_return_correct_if_answer_for_question_42_is_right() {
         //given
-        QuestionRepository mock = mock(QuestionRepository.class);
-        AnswerValidator answerValidator = new AnswerValidator(mock);
         Answer testAnswer = new Answer("42", "Toomas");
         List<String> answers = Arrays.asList("Toomas", "Martin");
-        given(mock.getAnswerById("42")).willReturn(answers);
+        given(this.mock.getAnswerById("42")).willReturn(answers);
 
         //when
-        String result = answerValidator.validateAnswer(testAnswer);
+        String result = this.answerValidator.validateAnswer(testAnswer);
 
         //then
         assertThat("correct").isEqualTo(result);
