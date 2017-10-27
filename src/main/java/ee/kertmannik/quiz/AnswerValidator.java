@@ -17,11 +17,12 @@ public class AnswerValidator {
         final String answerText = answer.getAnswer();
         try {
             List<String> correctAnswers = questionRepository.getAnswersById(questionId);
-            if (correctAnswers.contains(answerText)) {
-                return "correct";
-            } else {
-                return "wrong";
+            for(String correctAnswer : correctAnswers){
+                if (correctAnswer.toUpperCase().equals(answerText.toUpperCase())){
+                    return "correct";
+                }
             }
+            return "wrong";
         } catch (QuizException exception) {
             return "invalid Id";
         }
