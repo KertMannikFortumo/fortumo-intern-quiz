@@ -49,4 +49,18 @@ public class AnswerValidatorTest {
         //then
         assertThat("correct").isEqualTo(result);
     }
+
+    @Test
+    public void should_return_correct_if_answer_starts_with_lowercase_character() {
+        //given
+        Answer testAnswer = new Answer("42", "toomas");
+        List<String> answers = Arrays.asList("Toomas", "Martin");
+        given(this.mock.getAnswersById("42")).willReturn(answers);
+
+        //when
+        String result = this.answerValidator.validateAnswer(testAnswer);
+
+        //then
+        assertThat("correct").isEqualTo(result);
+    }
 }
