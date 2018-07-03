@@ -13,7 +13,7 @@ public class MyServletContextListener implements ServletContextListener {
     public static final String ANSWER_CONTROLLER = "AnswerController";
     public static final String QUESTION_CONTROLLER = "QuestionController";
     public static final String GIST_URL =
-            "https://gist.githubusercontent.com/KertMannikFortumo/6b17dca9c9ae8ff089d3c50aa7a03329/raw/1edbb70cbaba8900648d1c0d6cfc258f13cddc0b/gistfile1.txt";
+            "https://gist.githubusercontent.com/kertmannik/2a69e0d7b3ad9ca1a648893f8f52b7b8/raw/158dd869c70a5b93bb88b9a74532689d27cf3344/questions.txt";
     @Override
     public void contextInitialized(ServletContextEvent sce) {
 
