@@ -8,7 +8,7 @@ import java.util.List;
 public class RawQuestionParser {
 
     public List<Question> splittingRawQuestions(String rawData) {
-        String[] rawQuestions = rawData.split("\n");
+        String[] rawQuestions = rawData.split("\\n");
         List<Question> questions = new ArrayList<Question>();
         for (String rawQuestion : rawQuestions) {
             try {
